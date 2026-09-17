@@ -211,6 +211,13 @@ hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:mag
 hl.bind(mainMod .. " + H", function()
 	local w = hl.get_active_window()
 	if w == nil then return end
+	-- If the workspace is already fully minimized, Hyprland's "active
+	-- window" falls back to one of the already-hidden windows itself.
+	-- Moving a window into the special workspace it's ALREADY in acts
+	-- as a toggle-out (pops it back to a normal workspace), which is
+	-- how "nothing left to hide" turned into "everything pops back up".
+	-- No-op instead.
+	if w.workspace.name == "special:minimized" then return end
 	local originWs = w.workspace.id
 	hl.dispatch(hl.dsp.window.move({ workspace = "special:minimized" }))
 	hl.dispatch(hl.dsp.workspace.toggle_special("minimized"))

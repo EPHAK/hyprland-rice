@@ -28,10 +28,11 @@ Hyprland desktop configuration for Arch Linux. Catppuccin Mocha color scheme, Lu
 - **swaync** is configured with `title`, `dnd`, `mpris`, `calendar`, and `notifications` widgets, so the panel covers do-not-disturb, media control, and a calendar in addition to notifications.
 - **waybar** modules use explicit text labels (`CPU`, `RAM`, `VOL`, `BAT`, `WiFi`) rather than bare icon+percentage. Several modules have `on-click-right` bound to the relevant settings panel or tool (e.g. the battery module opens the power settings panel, CPU/RAM open `gnome-system-monitor`).
 - **hyprshell** replaces Hyprland's default focus-cycling Alt-Tab with a windowed switcher (config in `.config/hyprshell/config.ron`).
-- Window minimize/restore is implemented via a special workspace (`SUPER+H` moves the active window to `special:minimized`, `SUPER+SHIFT+H` toggles it back into view), since Wayland has no native minimize concept.
+- Window minimize/restore (`SUPER+H` / `SUPER+SHIFT+H`) is implemented via special workspaces, since Wayland has no native minimize concept. Each minimized window gets its own uniquely-named special workspace (derived from its address) rather than sharing one — a shared workspace means revealing any minimized window (e.g. via Alt-Tab) reveals all of them at once, since a special workspace has no per-window visibility control.
 - Animation curves use an expo-out bezier (`{0.16, 1}, {0.3, 1}`) instead of Hyprland's default, to avoid overshoot/bounce.
 - Screenshot binds pipe `grim`/`slurp` output into `satty` for annotation before saving/copying.
 - `kitty.conf` maps `Ctrl+Plus`/`Ctrl+Minus`/`Ctrl+0` to `change_font_size`, matching the convention most browsers use for page zoom.
+- `waypaper` is configured with `subfolders`/`all_subfolders` enabled, so selecting `~/Pictures` also surfaces `Pictures/wallpapers` without switching folders manually. `fill = fit` avoids cropping on images that aren't an exact resolution match.
 
 ## Keybindings
 

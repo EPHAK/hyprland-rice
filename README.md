@@ -32,7 +32,8 @@ Hyprland desktop configuration for Arch Linux. Catppuccin Mocha color scheme, Lu
 - Animation curves use an expo-out bezier (`{0.16, 1}, {0.3, 1}`) instead of Hyprland's default, to avoid overshoot/bounce.
 - Screenshot binds pipe `grim`/`slurp` output into `satty` for annotation before saving/copying.
 - `kitty.conf` maps `Ctrl+Plus`/`Ctrl+Minus`/`Ctrl+0` to `change_font_size`, matching the convention most browsers use for page zoom.
-- `waypaper` is configured with `subfolders`/`all_subfolders` enabled, so selecting `~/Pictures` also surfaces `Pictures/wallpapers` without switching folders manually. `fill = fit` avoids cropping on images that aren't an exact resolution match.
+- `waypaper` is configured with `subfolders`/`all_subfolders` enabled, so selecting `~/Pictures` also surfaces `Pictures/wallpapers` without switching folders manually.
+- `hyprpaper.conf` uses the current `wallpaper { monitor; path; fit_mode }` block schema with `fit_mode = contain`. The older `preload`/`wallpaper =` line syntax is silently ignored by current hyprpaper and defaults to `fit_mode = cover`, which crops non-16:9 images down to a zoomed-in region rather than showing the whole image. Note `fit_mode` is set here, not in waypaper's own fill/fit dropdown, which doesn't control this for the hyprpaper backend.
 
 ## Keybindings
 

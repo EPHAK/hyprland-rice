@@ -198,8 +198,14 @@ hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:mag
 
 -- GNOME/Fedora-style minimize: hide the active window to a special
 -- workspace, bring it back with SUPER+SHIFT+H.
-hl.bind(mainMod .. " + H", hl.dsp.window.move({ workspace = "special:minimized" }),
-	{ description = "[Window] minimize (hide)" })
+-- After moving the window away, Hyprland's "active window" still points
+-- at it (now hidden), so repeated presses would just re-target the same
+-- window forever. Explicitly cycle focus to the next visible window so
+-- repeated presses actually minimize one window after another.
+hl.bind(mainMod .. " + H", function()
+	hl.dispatch(hl.dsp.window.move({ workspace = "special:minimized" }))
+	hl.dispatch(hl.dsp.focus({ last = true }))
+end, { description = "[Window] minimize (hide)" })
 hl.bind(mainMod .. " + SHIFT + H", hl.dsp.workspace.toggle_special("minimized"),
 	{ description = "[Window] restore minimized windows" })
 

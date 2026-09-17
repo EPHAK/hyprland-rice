@@ -1,0 +1,121 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 36,
+    "margin-top": 6,
+    "margin-left": 10,
+    "margin-right": 10,
+    "spacing": 0,
+    "modules-left": ["custom/launcher", "hyprland/workspaces", "hyprland/window"],
+    "modules-center": ["clock"],
+    "modules-right": ["custom/notification", "group/tray-expander", "pulseaudio", "network", "group/hw", "disk", "battery"],
+
+    "custom/launcher": {
+        "format": "",
+        "on-click": "wofi --show drun",
+        "tooltip-format": "Applications"
+    },
+
+    "hyprland/workspaces": {
+        "format": " ",
+        "on-click": "activate",
+        "persistent-workspaces": {
+            "*": 5
+        }
+    },
+
+    "hyprland/window": {
+        "format": "{title}",
+        "max-length": 40,
+        "separate-outputs": true
+    },
+
+    "clock": {
+        "format": "{:%H:%M}",
+        "format-alt": "{:%a %d %b %Y}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "mode"
+    },
+
+    "custom/notification": {
+        "tooltip": true,
+        "format": "{icon}",
+        "format-icons": {
+            "notification": "<span foreground='#f38ba8'>󱅫</span>",
+            "none": "󰂜",
+            "dnd-notification": "<span foreground='#f38ba8'>󰂠</span>",
+            "dnd-none": "󰪓",
+            "inhibited-notification": "<span foreground='#f38ba8'>󰂛</span>",
+            "inhibited-none": "󰪑",
+            "dnd-inhibited-notification": "<span foreground='#f38ba8'>󰂛</span>",
+            "dnd-inhibited-none": "󰪑"
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw",
+        "escape": true
+    },
+
+    "group/tray-expander": {
+        "orientation": "horizontal",
+        "modules": ["tray"]
+    },
+
+    "tray": {
+        "icon-size": 15,
+        "spacing": 10
+    },
+
+    "group/hw": {
+        "orientation": "horizontal",
+        "modules": ["cpu", "memory"]
+    },
+
+    "cpu": {
+        "format": " CPU {usage}%",
+        "tooltip": false,
+        "on-click-right": "gnome-system-monitor"
+    },
+
+    "memory": {
+        "format": " RAM {}%",
+        "on-click-right": "gnome-system-monitor"
+    },
+
+    "disk": {
+        "path": "/",
+        "format": " {free} free",
+        "tooltip-format": "{used} used / {total} total ({percentage_used}%)",
+        "on-click-right": "baobab"
+    },
+
+    "battery": {
+        "states": { "warning": 30, "critical": 15 },
+        "format": "{icon} BAT {capacity}%",
+        "format-charging": " BAT {capacity}%",
+        "format-icons": ["", "", "", "", ""],
+        "on-click-right": "env XDG_CURRENT_DESKTOP=GNOME gnome-control-center power"
+    },
+
+    "network": {
+        "format-wifi": " {essid} ({signalStrength}%)",
+        "format-ethernet": " {ifname}",
+        "format-disconnected": "⚠ offline",
+        "tooltip-format": "{essid}: {ipaddr}/{cidr}",
+        "tooltip-format-disconnected": "Disconnected",
+        "on-click-right": "env XDG_CURRENT_DESKTOP=GNOME gnome-control-center wifi"
+    },
+
+    "pulseaudio": {
+        "format": "{icon} VOL {volume}%",
+        "format-muted": " muted",
+        "format-icons": {
+            "default": ["", "", ""]
+        },
+        "on-click": "pamixer -t",
+        "on-click-right": "env XDG_CURRENT_DESKTOP=GNOME gnome-control-center sound"
+    }
+}

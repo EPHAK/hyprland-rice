@@ -1,0 +1,28 @@
+/* Catppuccin Mocha, matching the rest of the rice (waybar, kitty) */
+:root {
+  --cc-bg: rgba(30, 30, 46, 0.85);
+  --noti-border-color: rgba(137, 180, 250, 0.25);
+  --noti-bg: 30, 30, 46;
+  --noti-bg-alpha: 0.9;
+  --noti-bg-darker: rgb(24, 24, 37);
+  --noti-bg-hover: rgb(49, 50, 68);
+  --noti-bg-focus: rgba(69, 71, 90, 0.6);
+  --noti-close-bg: rgb(49, 50, 68);
+  --noti-close-bg-hover: rgb(69, 71, 90);
+  --text-color: rgb(205, 214, 244);
+  --text-color-disabled: rgb(108, 112, 134);
+  --bg-selected: rgb(137, 180, 250);
+  --border-radius: 14px;
+}
+
+.control-center {
+  border: 1px solid rgba(137, 180, 250, 0.25);
+}
+
+.widget-dnd switch:checked {
+  background: rgb(137, 180, 250);
+}
+
+.widget-mpris .widget-mpris-player {
+  background-color: rgb(24, 24, 37);
+}

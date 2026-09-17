@@ -1,0 +1,131 @@
+* {
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+}
+
+window#waybar {
+    background: transparent;
+}
+
+/* Every top-level module/group becomes its own floating pill */
+#custom-launcher,
+#workspaces,
+#window,
+#clock,
+#custom-notification,
+#tray,
+#pulseaudio,
+#network,
+#cpu,
+#memory,
+#disk,
+#battery {
+    background: rgba(30, 30, 46, 0.85);
+    color: #cdd6f4;
+    margin: 4px 3px;
+    padding: 0 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(137, 180, 250, 0.12);
+    transition: background 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+#custom-launcher {
+    color: #1e1e2e;
+    background: #89b4fa;
+    font-size: 15px;
+    padding: 0 14px;
+    margin-left: 0;
+}
+
+#custom-launcher:hover {
+    background: #b4befe;
+}
+
+#workspaces {
+    padding: 0 8px;
+}
+
+#workspaces button {
+    min-width: 0;
+    min-height: 8px;
+    padding: 0;
+    margin: 4px 0;
+    background: transparent;
+    border-radius: 999px;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#workspaces button.active {
+    min-width: 28px;
+    margin: 4px 5px;
+    background: #b4befe;
+    box-shadow: 0 0 8px 1px rgba(137, 180, 250, 0.7);
+}
+
+#workspaces button:hover {
+    min-width: 10px;
+    margin: 4px 5px;
+    background: rgba(137, 180, 250, 0.6);
+}
+
+#window {
+    color: #a6adc8;
+    font-style: italic;
+}
+
+#clock {
+    font-weight: 700;
+    color: #cba6f7;
+}
+
+#custom-notification {
+    font-size: 15px;
+}
+
+#tray {
+    padding: 0 10px;
+}
+
+#tray menu {
+    background: #1e1e2e;
+    border-radius: 12px;
+}
+
+/* Grouped pills (hw, tray-expander) merge their children without extra gaps */
+#tray-expander,
+#hw {
+    background: rgba(30, 30, 46, 0.85);
+    margin: 4px 3px;
+    padding: 0 4px;
+    border-radius: 14px;
+    border: 1px solid rgba(137, 180, 250, 0.12);
+}
+
+#tray-expander > widget > #tray,
+#hw > widget > #cpu,
+#hw > widget > #memory {
+    background: transparent;
+    border: none;
+    margin: 4px 0;
+    padding: 0 8px;
+}
+
+#battery.warning {
+    color: #f9e2af;
+}
+
+#battery.critical {
+    color: #f38ba8;
+    background: rgba(243, 139, 168, 0.15);
+}
+
+#pulseaudio:hover,
+#network:hover,
+#disk:hover,
+#battery:hover {
+    background: rgba(49, 50, 68, 0.9);
+}

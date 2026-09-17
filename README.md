@@ -44,6 +44,7 @@ Hyprland desktop configuration for Arch Linux. Catppuccin Mocha color scheme, Lu
 | `SUPER + E` | Open file manager |
 | `SUPER + I` | Open settings |
 | `SUPER + W` | Wallpaper switcher |
+| `SUPER + D` | Display settings (nwg-displays) |
 | `SUPER + L` | Lock screen |
 | `SUPER + /` | List keybinds (reads live from `hyprctl binds`) |
 | `SUPER + SHIFT + E` | Power menu |
@@ -77,7 +78,7 @@ chezmoi init --apply <this-repo-url>
 
 Or copy `.config/*` directly into `~/.config/` if not using chezmoi.
 
-Packages referenced (Arch names): `hyprland waybar wofi kitty swaync hyprshell-bin hyprlock hypridle hyprpaper waypaper wlogout swayosd satty cliphist wl-clipboard gnome-control-center`.
+Packages referenced (Arch names): `hyprland waybar wofi kitty swaync hyprshell-bin hyprlock hypridle hyprpaper waypaper wlogout swayosd satty cliphist wl-clipboard gnome-control-center nwg-displays`.
 
 ## License
 

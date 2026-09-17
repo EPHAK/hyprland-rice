@@ -1,6 +1,6 @@
 # hyprland-rice
 
-A Hyprland (Wayland) desktop setup for Arch Linux — Catppuccin Mocha throughout, built to feel like a complete DE rather than a bare compositor.
+Hyprland desktop configuration for Arch Linux. Catppuccin Mocha color scheme, Lua-based Hyprland config (0.56+), managed with chezmoi.
 
 ![screenshot](.github/screenshot.png)
 
@@ -8,34 +8,34 @@ A Hyprland (Wayland) desktop setup for Arch Linux — Catppuccin Mocha throughou
 
 | Role | Tool |
 |---|---|
-| Compositor | [Hyprland](https://hyprland.org) (Lua config, 0.56+) |
+| Compositor | [Hyprland](https://hyprland.org) |
 | Bar | [waybar](https://github.com/Alexays/Waybar) |
 | Launcher | [wofi](https://sr.ht/~scoopta/wofi/) |
 | Terminal | [kitty](https://sw.kovidgoyal.net/kitty/) |
-| Notifications / control center | [swaync](https://github.com/ErikReider/SwayNotificationCenter) |
+| Notifications | [swaync](https://github.com/ErikReider/SwayNotificationCenter) |
 | Window switcher | [hyprshell](https://github.com/H3rmt/hyprshell) |
-| Lock / idle / wallpaper | hyprlock, hypridle, hyprpaper |
+| Lock / idle / wallpaper daemon | hyprlock, hypridle, hyprpaper |
 | Wallpaper picker | [waypaper](https://github.com/anufrievroman/waypaper) |
 | Power menu | [wlogout](https://github.com/ArtsyMacaw/wlogout) |
-| OSD (volume/brightness) | [swayosd](https://github.com/ErikReider/SwayOSD) |
+| OSD | [swayosd](https://github.com/ErikReider/SwayOSD) |
 | Screenshot annotation | [satty](https://github.com/gabm/satty) |
 | Clipboard history | [cliphist](https://github.com/sentriz/cliphist) |
-| Settings | GNOME Control Center |
+| Settings panel | GNOME Control Center |
 | Dotfile management | [chezmoi](https://www.chezmoi.io) |
 
-## Features
+## Notes on specific components
 
-- **Notification center, not just popups** — swaync panel has Do Not Disturb, MPRIS media controls (play/pause/skip for whatever's playing), and a calendar widget, not just a notification list.
-- **Waybar that's actually readable** — every stat is labeled (CPU/RAM/VOL/BAT/WiFi), not bare icon+percentage. Right-click any of them to jump straight to the relevant settings panel or tool (sound settings, wifi settings, power settings, system monitor, disk usage analyzer).
-- **Real Alt-Tab** — hyprshell gives a proper visual window switcher (hold Alt, tap Tab) instead of silent focus-cycling, plus a Super-tap overview/launcher.
-- **GNOME-style minimize/restore** — `SUPER+H` hides the active window, `SUPER+SHIFT+H` brings it back, since Wayland has no native minimize.
-- **Smooth, fast animations** — expo-out curves, no bouncy overshoot, tuned for feeling snappy rather than showy.
-- **Screenshots you can annotate** — region/fullscreen capture pipes straight into satty before saving.
-- **Font zoom that matches your browser** — `Ctrl +`/`Ctrl -`/`Ctrl 0` in kitty, same convention as Firefox/Chrome.
+- **swaync** is configured with `title`, `dnd`, `mpris`, `calendar`, and `notifications` widgets, so the panel covers do-not-disturb, media control, and a calendar in addition to notifications.
+- **waybar** modules use explicit text labels (`CPU`, `RAM`, `VOL`, `BAT`, `WiFi`) rather than bare icon+percentage. Several modules have `on-click-right` bound to the relevant settings panel or tool (e.g. the battery module opens the power settings panel, CPU/RAM open `gnome-system-monitor`).
+- **hyprshell** replaces Hyprland's default focus-cycling Alt-Tab with a windowed switcher (config in `.config/hyprshell/config.ron`).
+- Window minimize/restore is implemented via a special workspace (`SUPER+H` moves the active window to `special:minimized`, `SUPER+SHIFT+H` toggles it back into view), since Wayland has no native minimize concept.
+- Animation curves use an expo-out bezier (`{0.16, 1}, {0.3, 1}`) instead of Hyprland's default, to avoid overshoot/bounce.
+- Screenshot binds pipe `grim`/`slurp` output into `satty` for annotation before saving/copying.
+- `kitty.conf` maps `Ctrl+Plus`/`Ctrl+Minus`/`Ctrl+0` to `change_font_size`, matching the convention most browsers use for page zoom.
 
 ## Keybindings
 
-`SUPER` = the Windows/Super key.
+`SUPER` = Super/Windows key.
 
 | Bind | Action |
 |---|---|
@@ -45,11 +45,11 @@ A Hyprland (Wayland) desktop setup for Arch Linux — Catppuccin Mocha throughou
 | `SUPER + I` | Open settings |
 | `SUPER + W` | Wallpaper switcher |
 | `SUPER + L` | Lock screen |
-| `SUPER + /` | Show this keybind list (live, pulled from `hyprctl binds`) |
+| `SUPER + /` | List keybinds (reads live from `hyprctl binds`) |
 | `SUPER + SHIFT + E` | Power menu |
 | `SUPER + SHIFT + V` | Clipboard history |
-| `CTRL + W` | Close tab/window (app-native, not a global override) |
-| `SUPER + Q` | Force-close active window |
+| `CTRL + W` | Close tab/window (handled by the app, not a global bind) |
+| `SUPER + Q` | Close active window |
 | `SUPER + SHIFT + Q` | Exit Hyprland |
 | `SUPER + V` | Toggle floating |
 | `SUPER + F` | Toggle fullscreen |
@@ -61,24 +61,24 @@ A Hyprland (Wayland) desktop setup for Arch Linux — Catppuccin Mocha throughou
 | `SUPER + SHIFT + [1-0]` | Move window to workspace |
 | `SUPER + S` | Toggle scratchpad |
 | `SUPER + H` / `SUPER + SHIFT + H` | Minimize / restore window |
-| `ALT + Tab` (hold) | Visual window switcher |
-| `Super_L` (tap) | Overview / launcher |
-| `Print` / `SHIFT + Print` | Screenshot region/fullscreen → annotate → clipboard |
+| `ALT + Tab` (hold) | Window switcher |
+| `Super_L` (tap) | Overview/launcher |
+| `Print` / `SHIFT + Print` | Screenshot region/fullscreen, opens in satty |
 | `SUPER + SHIFT + R` | Toggle screen recording |
-| Volume / brightness keys | OSD feedback via swayosd |
+| Volume / brightness keys | OSD via swayosd |
 
 ## Install
 
-Configs are chezmoi-managed. Adjust paths/hostnames for your own machine before applying — this was built for one specific box, not written as a generic installer.
+This repo mirrors `~/.config`. It's chezmoi-managed but not written as a generic installer — check paths/assumptions against your own hardware before applying, particularly anything GPU- or hardware-specific in `hyprland.lua`.
 
 ```bash
 chezmoi init --apply <this-repo-url>
 ```
 
-Or just copy `.config/*` into `~/.config/` directly if you don't use chezmoi.
+Or copy `.config/*` directly into `~/.config/` if not using chezmoi.
 
-You'll need (Arch package names): `hyprland waybar wofi kitty swaync hyprshell-bin hyprlock hypridle hyprpaper waypaper wlogout swayosd satty cliphist wl-clipboard gnome-control-center`.
+Packages referenced (Arch names): `hyprland waybar wofi kitty swaync hyprshell-bin hyprlock hypridle hyprpaper waypaper wlogout swayosd satty cliphist wl-clipboard gnome-control-center`.
 
 ## License
 
-MIT — take whatever's useful, no attribution needed.
+MIT.

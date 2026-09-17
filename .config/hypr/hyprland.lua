@@ -256,6 +256,10 @@ hl.bind(mainMod .. " + SHIFT + H", function()
 	end
 end, { description = "[Window] restore minimized windows" })
 
+-- GNOME's Displays panel is mutter-specific and does nothing under
+-- Hyprland; nwg-displays is the actual working equivalent.
+hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("nwg-displays"), { description = "[System] display settings" })
+
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }), { description = "[Workspace] next" })
 hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }), { description = "[Workspace] previous" })
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true, description = "[Window] drag move" })

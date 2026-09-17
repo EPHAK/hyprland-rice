@@ -14,7 +14,8 @@ Hyprland desktop configuration for Arch Linux. Catppuccin Mocha color scheme, Lu
 | Terminal | [kitty](https://sw.kovidgoyal.net/kitty/) |
 | Notifications | [swaync](https://github.com/ErikReider/SwayNotificationCenter) |
 | Window switcher | [hyprshell](https://github.com/H3rmt/hyprshell) |
-| Lock / idle / wallpaper daemon | hyprlock, hypridle, hyprpaper |
+| Lock / idle | hyprlock, hypridle |
+| Wallpaper daemon | [awww](https://codeberg.org/LGFae/awww) (successor to swww) |
 | Wallpaper picker | [waypaper](https://github.com/anufrievroman/waypaper) |
 | Power menu | [wlogout](https://github.com/ArtsyMacaw/wlogout) |
 | OSD | [swayosd](https://github.com/ErikReider/SwayOSD) |
@@ -33,7 +34,7 @@ Hyprland desktop configuration for Arch Linux. Catppuccin Mocha color scheme, Lu
 - Screenshot binds pipe `grim`/`slurp` output into `satty` for annotation before saving/copying.
 - `kitty.conf` maps `Ctrl+Plus`/`Ctrl+Minus`/`Ctrl+0` to `change_font_size`, matching the convention most browsers use for page zoom.
 - `waypaper` is configured with `subfolders`/`all_subfolders` enabled, so selecting `~/Pictures` also surfaces `Pictures/wallpapers` without switching folders manually.
-- `hyprpaper.conf` uses the current `wallpaper { monitor; path; fit_mode }` block schema with `fit_mode = contain`. The older `preload`/`wallpaper =` line syntax is silently ignored by current hyprpaper and defaults to `fit_mode = cover`, which crops non-16:9 images down to a zoomed-in region rather than showing the whole image. Note `fit_mode` is set here, not in waypaper's own fill/fit dropdown, which doesn't control this for the hyprpaper backend.
+- Wallpaper backend is `awww`, not `hyprpaper`. waypaper's hyprpaper integration calls `hyprctl hyprpaper unload all` then reloads with no `fit_mode` on every switch, silently discarding any fit/crop config on each change (a waypaper bug, not a hyprpaper config issue — confirmed by reading waypaper's own `change_with_hyprpaper()` source). `awww` applies `--resize fit` on every single call instead, with no such reset.
 
 ## Keybindings
 
@@ -80,7 +81,7 @@ chezmoi init --apply <this-repo-url>
 
 Or copy `.config/*` directly into `~/.config/` if not using chezmoi.
 
-Packages referenced (Arch names): `hyprland waybar wofi kitty swaync hyprshell-bin hyprlock hypridle hyprpaper waypaper wlogout swayosd satty cliphist wl-clipboard gnome-control-center nwg-displays`.
+Packages referenced (Arch names): `hyprland waybar wofi kitty swaync hyprshell-bin hyprlock hypridle awww waypaper wlogout swayosd satty cliphist wl-clipboard gnome-control-center nwg-displays`.
 
 ## License
 

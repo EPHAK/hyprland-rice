@@ -22,7 +22,11 @@ hl.monitor({ output = "", mode = "preferred", position = "auto", scale = 1 })
 hl.on("hyprland.start", function()
 	hl.exec_cmd("waybar")
 	hl.exec_cmd("swaync")
-	hl.exec_cmd("hyprpaper")
+	-- hyprpaper's fit_mode config is silently discarded on every wallpaper
+	-- switch waypaper does (it calls "unload all" then reloads with no
+	-- fit_mode, resetting to hyprpaper's default cover/crop). awww applies
+	-- fit mode per-call instead, with no such reset.
+	hl.exec_cmd("sh -c 'awww-daemon & sleep 1; awww img ~/Pictures/wallpapers/aurora-dark.png --resize fit --fill-color 000000'")
 	hl.exec_cmd("hypridle")
 	hl.exec_cmd("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1")
 	hl.exec_cmd("nm-applet --indicator")

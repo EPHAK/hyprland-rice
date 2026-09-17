@@ -196,31 +196,44 @@ hl.bind(mainMod .. " + S", hl.dsp.workspace.toggle_special("magic"), { descripti
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:magic" }),
 	{ description = "[Workspace] move window to scratchpad" })
 
--- GNOME/Fedora-style minimize: hide the active window to a special
--- workspace, bring it back with SUPER+SHIFT+H.
--- Two issues fixed here:
--- 1. Moving a window INTO a special workspace auto-reveals that special
---    workspace as a fullscreen overlay (confirmed via testing) -- so the
---    window never actually disappeared, it just got shown covering
---    everything else. Explicitly toggle it closed again right after.
--- 2. Hyprland's "active window" still points at the just-hidden window
---    afterwards. hl.dsp.focus({last=true}) to shift off it was
---    unreliable (sometimes refocused the same window), so instead we
---    explicitly find and focus another window still on the origin
---    workspace.
+-- GNOME/Fedora-style minimize: hide the active window, bring it back
+-- with SUPER+SHIFT+H. Each minimized window gets its OWN special
+-- workspace (named by its address) rather than sharing one -- a shared
+-- one meant revealing any minimized window via Alt-Tab revealed ALL of
+-- them at once, since a special workspace has no concept of individual
+-- window visibility. Per-window workspaces fix that: revealing one
+-- window's own special workspace never touches anyone else's.
+--
+-- Other fixes folded in:
+-- - Moving a window INTO a special workspace auto-reveals it as an
+--   overlay (confirmed via testing), so it's explicitly toggled closed
+--   again right after.
+-- - Hyprland's "active window" still points at the just-hidden window
+--   afterwards; explicitly focus another window still on the origin
+--   workspace instead of relying on focus({last=true}) (unreliable).
+local function minimizedWsSuffix(address)
+	return "min_" .. address:gsub("^0x", "")
+end
+
 hl.bind(mainMod .. " + H", function()
 	local w = hl.get_active_window()
 	if w == nil then return end
-	-- If the workspace is already fully minimized, Hyprland's "active
-	-- window" falls back to one of the already-hidden windows itself.
-	-- Moving a window into the special workspace it's ALREADY in acts
-	-- as a toggle-out (pops it back to a normal workspace), which is
-	-- how "nothing left to hide" turned into "everything pops back up".
-	-- No-op instead.
-	if w.workspace.name == "special:minimized" then return end
+	local suffix = minimizedWsSuffix(w.address)
+	local wsName = "special:" .. suffix
+	if w.workspace.name == wsName then
+		-- Already minimized and its own special workspace is what's
+		-- currently revealed (e.g. selected via Alt-Tab) -- just
+		-- re-hide it. If it's not actually revealed, there's nothing
+		-- to do.
+		local activeSpecial = hl.get_active_special_workspace()
+		if activeSpecial ~= nil and activeSpecial.name == wsName then
+			hl.dispatch(hl.dsp.workspace.toggle_special(suffix))
+		end
+		return
+	end
 	local originWs = w.workspace.id
-	hl.dispatch(hl.dsp.window.move({ workspace = "special:minimized" }))
-	hl.dispatch(hl.dsp.workspace.toggle_special("minimized"))
+	hl.dispatch(hl.dsp.window.move({ workspace = wsName }))
+	hl.dispatch(hl.dsp.workspace.toggle_special(suffix))
 	local remaining = hl.get_workspace_windows(originWs)
 	if remaining ~= nil then
 		for _, rw in ipairs(remaining) do
@@ -233,12 +246,13 @@ hl.bind(mainMod .. " + H", function()
 end, { description = "[Window] minimize (hide)" })
 
 hl.bind(mainMod .. " + SHIFT + H", function()
-	local wins = hl.get_workspace_windows("special:minimized")
-	if wins == nil then return end
+	local allWins = hl.get_windows()
 	local active = hl.get_active_workspace()
-	if active == nil then return end
-	for _, w in ipairs(wins) do
-		hl.dispatch(hl.dsp.window.move({ window = "address:" .. w.address, workspace = active.id }))
+	if allWins == nil or active == nil then return end
+	for _, w in ipairs(allWins) do
+		if w.workspace.name:match("^special:min_") then
+			hl.dispatch(hl.dsp.window.move({ window = "address:" .. w.address, workspace = active.id }))
+		end
 	end
 end, { description = "[Window] restore minimized windows" })
 

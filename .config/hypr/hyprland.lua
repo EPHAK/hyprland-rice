@@ -198,16 +198,42 @@ hl.bind(mainMod .. " + SHIFT + S", hl.dsp.window.move({ workspace = "special:mag
 
 -- GNOME/Fedora-style minimize: hide the active window to a special
 -- workspace, bring it back with SUPER+SHIFT+H.
--- After moving the window away, Hyprland's "active window" still points
--- at it (now hidden), so repeated presses would just re-target the same
--- window forever. Explicitly cycle focus to the next visible window so
--- repeated presses actually minimize one window after another.
+-- Two issues fixed here:
+-- 1. Moving a window INTO a special workspace auto-reveals that special
+--    workspace as a fullscreen overlay (confirmed via testing) -- so the
+--    window never actually disappeared, it just got shown covering
+--    everything else. Explicitly toggle it closed again right after.
+-- 2. Hyprland's "active window" still points at the just-hidden window
+--    afterwards. hl.dsp.focus({last=true}) to shift off it was
+--    unreliable (sometimes refocused the same window), so instead we
+--    explicitly find and focus another window still on the origin
+--    workspace.
 hl.bind(mainMod .. " + H", function()
+	local w = hl.get_active_window()
+	if w == nil then return end
+	local originWs = w.workspace.id
 	hl.dispatch(hl.dsp.window.move({ workspace = "special:minimized" }))
-	hl.dispatch(hl.dsp.focus({ last = true }))
+	hl.dispatch(hl.dsp.workspace.toggle_special("minimized"))
+	local remaining = hl.get_workspace_windows(originWs)
+	if remaining ~= nil then
+		for _, rw in ipairs(remaining) do
+			if rw.address ~= w.address then
+				hl.dispatch(hl.dsp.focus({ window = "address:" .. rw.address }))
+				break
+			end
+		end
+	end
 end, { description = "[Window] minimize (hide)" })
-hl.bind(mainMod .. " + SHIFT + H", hl.dsp.workspace.toggle_special("minimized"),
-	{ description = "[Window] restore minimized windows" })
+
+hl.bind(mainMod .. " + SHIFT + H", function()
+	local wins = hl.get_workspace_windows("special:minimized")
+	if wins == nil then return end
+	local active = hl.get_active_workspace()
+	if active == nil then return end
+	for _, w in ipairs(wins) do
+		hl.dispatch(hl.dsp.window.move({ window = "address:" .. w.address, workspace = active.id }))
+	end
+end, { description = "[Window] restore minimized windows" })
 
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }), { description = "[Workspace] next" })
 hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }), { description = "[Workspace] previous" })

@@ -264,6 +264,9 @@ end, { description = "[Window] restore minimized windows" })
 -- Hyprland; nwg-displays is the actual working equivalent.
 hl.bind(mainMod .. " + D", hl.dsp.exec_cmd("nwg-displays"), { description = "[System] display settings" })
 
+hl.bind(mainMod .. " + C", hl.dsp.exec_cmd("gnome-calculator"), { description = "[Apps] open calculator" })
+hl.bind("XF86Calculator", hl.dsp.exec_cmd("gnome-calculator"), { description = "[Apps] open calculator (hardware key)" })
+
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }), { description = "[Workspace] next" })
 hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }), { description = "[Workspace] previous" })
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true, description = "[Window] drag move" })

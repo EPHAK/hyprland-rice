@@ -1,0 +1,82 @@
+* {
+    background-image: none;
+    transition: 60ms;
+}
+
+window {
+    background-color: rgba(30, 30, 46, 0.85);
+}
+
+button {
+    color: #cdd6f4;
+    background-color: #1e1e2e;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #313244;
+    border-radius: 14px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 25%;
+    margin: 10px;
+}
+
+button:focus,
+button:active,
+button:hover {
+    background-color: #313244;
+    border-color: #89b4fa;
+}
+
+#lock {
+    background-image: image(url("/usr/share/wlogout/icons/lock.png"));
+}
+#lock:focus,
+#lock:active,
+#lock:hover {
+    border-color: #89b4fa;
+}
+
+#suspend {
+    background-image: image(url("/usr/share/wlogout/icons/suspend.png"));
+}
+#suspend:focus,
+#suspend:active,
+#suspend:hover {
+    border-color: #a6e3a1;
+}
+
+#logout {
+    background-image: image(url("/usr/share/wlogout/icons/logout.png"));
+}
+#logout:focus,
+#logout:active,
+#logout:hover {
+    border-color: #f9e2af;
+}
+
+#hibernate {
+    background-image: image(url("/usr/share/wlogout/icons/hibernate.png"));
+}
+#hibernate:focus,
+#hibernate:active,
+#hibernate:hover {
+    border-color: #cba6f7;
+}
+
+#reboot {
+    background-image: image(url("/usr/share/wlogout/icons/reboot.png"));
+}
+#reboot:focus,
+#reboot:active,
+#reboot:hover {
+    border-color: #fab387;
+}
+
+#shutdown {
+    background-image: image(url("/usr/share/wlogout/icons/shutdown.png"));
+}
+#shutdown:focus,
+#shutdown:active,
+#shutdown:hover {
+    border-color: #f38ba8;
+}

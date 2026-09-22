@@ -1,0 +1,6 @@
+[Unit]
+Description=Restart SDDM if greeter fails to reappear after a session ends
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/sddm-watchdog.sh

@@ -1,0 +1,10 @@
+[Unit]
+Description=Periodically check that SDDM has a working greeter or session
+
+[Timer]
+OnBootSec=30s
+OnUnitActiveSec=5s
+AccuracySec=1s
+
+[Install]
+WantedBy=timers.target

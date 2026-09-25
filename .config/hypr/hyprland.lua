@@ -1,7 +1,6 @@
 -- Hyprland 0.56+ Lua config.
 -- Migrated from the old hyprland.conf (INI) format, which is no longer
--- parsed correctly by this Hyprland version. See ~/hyprland.conf.old-bak
--- for the previous version if you need to cross-reference anything.
+-- parsed correctly by this Hyprland version.
 
 local mainMod = "SUPER"
 local terminal = "kitty"

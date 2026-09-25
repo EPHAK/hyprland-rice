@@ -25,7 +25,7 @@ Hyprland desktop configuration for Arch Linux. Catppuccin Mocha color scheme, Lu
 | File manager (TUI) | [yazi](https://yazi-rs.github.io) |
 | System monitor | [btop](https://github.com/aristocratos/btop) |
 | Audio visualizer | [cava](https://github.com/karlstav/cava) |
-| Keybind browser/editor | [keybey](https://github.com/EPHAK/keybey) (private, not part of this repo) |
+| Keybind browser/editor | [keybey](https://github.com/EPHAK/keybey) (separate repo, install independently) |
 | Bluetooth manager (TUI) | [bt-tui](https://github.com/EPHAK/bt-tui) (not part of this repo) |
 | Equalizer (TUI) | [eqt](https://github.com/EPHAK/eqt) (not part of this repo) |
 | Settings panel | GNOME Control Center |
@@ -39,7 +39,7 @@ Hyprland desktop configuration for Arch Linux. Catppuccin Mocha color scheme, Lu
 - Window minimize/restore (`SUPER+H` / `SUPER+SHIFT+H`) is implemented via special workspaces, since Wayland has no native minimize concept. Each minimized window gets its own uniquely-named special workspace (derived from its address) rather than sharing one. A shared workspace means revealing any minimized window (e.g. via Alt-Tab) reveals all of them at once, since a special workspace has no per-window visibility control.
 - Animation curves use an expo-out bezier (`{0.16, 1}, {0.3, 1}`) instead of Hyprland's default, to avoid overshoot/bounce.
 - Screenshot binds pipe `grim`/`slurp` output into `satty` for annotation before saving/copying, except `SUPER + Print`, which calls `grim` directly for an instant, unannotated capture. Its filename uses shell `$(date +...)` substitution, not `grim`'s own filename argument -- this `grim` build doesn't expand `strftime` patterns there, so a naive `%Y%m%d-%H%M%S.png` argument produces a literal filename instead of a timestamp.
-- `SUPER + SHIFT + /` opens [keybey](https://github.com/EPHAK/keybey) (alias `kb`), a separate keybind browser/editor covering this Lua config *and* yazi's keymap together -- not part of this repo, install it independently if you want that bind to resolve to anything.
+- `SUPER + SHIFT + /` opens [keybey](https://github.com/EPHAK/keybey) (alias `kb`), a separate keybind browser/editor covering this Lua config, yazi's keymap and Neovim's keymaps together -- not part of this repo, install it independently if you want that bind to resolve to anything.
 - `mimeapps.list` sets [Loupe](https://apps.gnome.org/Loupe/) as the default handler for image mimetypes. Without it, `xdg-open`/GTK file managers may fall through to a browser (observed: Chrome claiming `image/png` with no `~/.config/mimeapps.list` present to override it).
 - `kitty.conf` maps `Ctrl+Plus`/`Ctrl+Minus`/`Ctrl+0` to `change_font_size`, matching the convention most browsers use for page zoom.
 - `waypaper` is configured with `subfolders`/`all_subfolders` enabled, so selecting `~/Pictures` also surfaces `Pictures/wallpapers` without switching folders manually.
@@ -160,7 +160,7 @@ yay -S hyprshell-bin
 # 3. configs
 cp -r .config/* ~/.config/
 
-# 4. wallpapers -- referenced by absolute path in hyprlock.conf,
+# 4. wallpapers -- referenced by path from hyprlock.conf, hyprland.lua,
 #    waypaper's config, and the SDDM theme, so they need to land here
 mkdir -p ~/Pictures/wallpapers
 cp wallpapers/* ~/Pictures/wallpapers/

@@ -3,6 +3,7 @@
 Hyprland desktop configuration for Arch Linux. Catppuccin Mocha color scheme, Lua-based Hyprland config (0.56+), managed with chezmoi.
 
 ![screenshot](.github/screenshot.png)
+![yazi with the yazi config in the repo itself](.github/screenshot-yazi.png)
 
 ## Stack
 

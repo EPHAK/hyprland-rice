@@ -189,6 +189,48 @@ separate public repo: [github.com/EPHAK/keybey](https://github.com/EPHAK/keybey)
 `bt-tui` and `eqt` are public and installable independently the same
 way as any of these tools.
 
+### On Fedora, Debian, or another non-Arch distro
+
+Nothing here is Arch-specific -- Hyprland, waybar, and the rest of this
+stack run the same everywhere. Package *names* differ, though, and a
+few pieces genuinely aren't in Fedora's or Debian's official repos
+(verified against Fedora 44 and Debian 13 directly, not assumed):
+
+- **Hyprland itself, `hyprlock`, `hypridle`, `awww`, and `hyprshell`**
+  are not packaged by Fedora or Debian at all. Follow
+  [Hyprland's own multi-distro install docs](https://wiki.hyprland.org/Getting-Started/Installation/)
+  for these -- they maintain per-distro instructions (COPR on Fedora,
+  backports/build-from-source on Debian) and keep them current, which a
+  hardcoded command here would not stay.
+- **`yazi` and `satty`** are Rust tools not packaged by either distro
+  either. Both publish to crates.io, so `cargo install yazi-fm
+  yazi-cli` / `cargo install satty` is the standard fallback if no
+  distro package turns up.
+- **The Nerd Font** isn't a real package on any distro (Arch's AUR
+  helper packages a pre-patched one; Fedora/Debian's plain
+  `jetbrains-mono` packages are the *unpatched* font and won't have the
+  icon glyphs waybar/wofi expect). Download the patched version
+  directly from [Nerd Fonts' releases](https://github.com/ryanoasis/nerd-fonts/releases)
+  and drop the `.ttf` files into `~/.local/share/fonts/`, then
+  `fc-cache -f` -- this is actually the same on every distro, Arch
+  included.
+- **Everything else** (waybar, wofi, kitty, swaync, wlogout, swayosd,
+  cliphist, wl-clipboard, the gnome-\* apps, fd, ripgrep, zoxide,
+  7-Zip, poppler, jq, btop, cava, fastfetch, neovim, luarocks) is in
+  Fedora's and Debian's official repos, under close-enough names:
+
+  | This repo says (Arch) | Fedora (`dnf`) | Debian/Ubuntu (`apt`) |
+  |---|---|---|
+  | `swaync` | `swaync` | `sway-notification-center` |
+  | `7zip` | `7zip` | `p7zip-full` |
+  | `fd` | `fd-find` | `fd-find` |
+  | `python-tomlkit` | `python3-tomli` | `python3-tomli` |
+  | `nodejs npm` | `nodejs22` (or current version) | `nodejs npm` |
+  | `qt5-quickcontrols2` | `qt5-qtquickcontrols2` | `qml6-module-qtquick-controls` |
+
+  Fedora also splits `tree-sitter-cli` out of its own repos; grab it
+  via `npm install -g tree-sitter-cli` if `dnf` doesn't have it.
+
 ## License
 
 [MIT](LICENSE)
